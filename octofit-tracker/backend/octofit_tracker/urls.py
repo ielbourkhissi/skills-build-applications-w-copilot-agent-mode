@@ -13,9 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
 from django.urls import path
+from octofit_tracker import views
+
+codespace_name = os.environ.get('CODESPACE_NAME')
+if codespace_name:
+    base_url = f"https://{codespace_name}-8000.app.github.dev"
+else:
+    base_url = "http://localhost:8000"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', views.api_root, name='api-root'),
+    path('api/users/', views.users_list, name='users-list'),
+    path('api/teams/', views.teams_list, name='teams-list'),
+    path('api/activities/', views.activities_list, name='activities-list'),
+    path('api/leaderboards/', views.leaderboards_list, name='leaderboards-list'),
+    path('api/workouts/', views.workouts_list, name='workouts-list'),
+    path('', views.api_root),
 ]

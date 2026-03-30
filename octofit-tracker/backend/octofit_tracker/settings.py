@@ -27,7 +27,10 @@ DEBUG = True
 
 
 # Allow all hosts
-ALLOWED_HOSTS = ['*']
+import os
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+if os.environ.get('CODESPACE_NAME'):
+    ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
 
 
 # Application definition
@@ -89,10 +92,6 @@ DATABASES = {
         'CLIENT': {
             'host': 'localhost',
             'port': 27017,
-            'username': '',
-            'password': '',
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1',
         },
     }
 }
@@ -104,9 +103,6 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
